@@ -1,0 +1,217 @@
+{
+  "name": "SemanticModel",
+  "compatibilityLevel": 1500,
+  "model": {
+    "culture": "en-US",
+    "dataSources": [
+      {
+        "type": "structured",
+        "name": "MySql/127 0 0 1;amc",
+        "connectionDetails": {
+          "protocol": "mysql",
+          "address": {
+            "server": "127.0.0.1",
+            "database": "amc"
+          },
+          "authentication": null,
+          "query": null
+        },
+        "options": {
+          "returnSingleDatabase": true
+        },
+        "credential": {
+          "AuthenticationKind": "UsernamePassword",
+          "Username": "root",
+          "EncryptConnection": true
+        }
+      }
+    ],
+    "tables": [
+      {
+        "name": "amc dates",
+        "columns": [
+          {
+            "name": "date_id",
+            "dataType": "int64",
+            "sourceColumn": "date_id"
+          },
+          {
+            "name": "date",
+            "dataType": "dateTime",
+            "sourceColumn": "date"
+          },
+          {
+            "name": "timestamp",
+            "dataType": "int64",
+            "sourceColumn": "timestamp"
+          },
+          {
+            "name": "weekend",
+            "dataType": "string",
+            "sourceColumn": "weekend"
+          },
+          {
+            "name": "day_of_week",
+            "dataType": "string",
+            "sourceColumn": "day_of_week"
+          },
+          {
+            "name": "month",
+            "dataType": "string",
+            "sourceColumn": "month"
+          },
+          {
+            "name": "month_day",
+            "dataType": "int64",
+            "sourceColumn": "month_day"
+          },
+          {
+            "name": "year",
+            "dataType": "int64",
+            "sourceColumn": "year"
+          },
+          {
+            "name": "week_starting_monday",
+            "dataType": "string",
+            "sourceColumn": "week_starting_monday"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "Partition",
+            "dataView": "full",
+            "source": {
+              "type": "m",
+              "expression": [
+                "let",
+                "    Source = #\"MySql/127 0 0 1;amc\",",
+                "    amc_dates = Source{[Schema=\"amc\",Item=\"dates\"]}[Data]",
+                "in",
+                "    amc_dates"
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "amc coop_trsx",
+        "columns": [
+          {
+            "name": "NO_SUCC",
+            "dataType": "double",
+            "sourceColumn": "NO_SUCC"
+          },
+          {
+            "name": "DATE_TRSC",
+            "dataType": "dateTime",
+            "sourceColumn": "DATE_TRSC"
+          },
+          {
+            "name": "MONTANT_CHEQUE",
+            "dataType": "double",
+            "sourceColumn": "MONTANT_CHEQUE"
+          },
+          {
+            "name": "DEPOT",
+            "dataType": "double",
+            "sourceColumn": "DEPOT"
+          },
+          {
+            "name": "REMB_INTERET",
+            "dataType": "double",
+            "sourceColumn": "REMB_INTERET"
+          },
+          {
+            "name": "FIELD011",
+            "dataType": "double",
+            "sourceColumn": "FIELD011"
+          },
+          {
+            "name": "FIELD012",
+            "dataType": "double",
+            "sourceColumn": "FIELD012"
+          },
+          {
+            "name": "REMB_HYPOTH",
+            "dataType": "double",
+            "sourceColumn": "REMB_HYPOTH"
+          },
+          {
+            "name": "SOLDE",
+            "dataType": "double",
+            "sourceColumn": "SOLDE"
+          },
+          {
+            "name": "DATE_CHARGEMENT",
+            "dataType": "dateTime",
+            "sourceColumn": "DATE_CHARGEMENT"
+          },
+          {
+            "name": "INSTITUTION",
+            "dataType": "string",
+            "sourceColumn": "INSTITUTION"
+          },
+          {
+            "name": "COMPTE",
+            "dataType": "string",
+            "sourceColumn": "COMPTE"
+          },
+          {
+            "name": "NO_LIGNE",
+            "dataType": "double",
+            "sourceColumn": "NO_LIGNE"
+          },
+          {
+            "name": "DESCRIPION",
+            "dataType": "string",
+            "sourceColumn": "DESCRIPION"
+          },
+          {
+            "name": "NO_CHEQUE",
+            "dataType": "double",
+            "sourceColumn": "NO_CHEQUE"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "Partition",
+            "dataView": "full",
+            "source": {
+              "type": "m",
+              "expression": [
+                "let",
+                "    Source = #\"MySql/127 0 0 1;amc\",",
+                "    amc_coop_trsx = Source{[Schema=\"amc\",Item=\"coop_trsx\"]}[Data]",
+                "in",
+                "    amc_coop_trsx"
+              ]
+            }
+          }
+        ],
+        "measures": [
+          {
+            "name": "tesr",
+            "expression": " sum('amc coop_trsx'[DEPOT])"
+          },
+          {
+            "name": "test2",
+            "expression": [
+              "",
+              "COUNTROWS((",
+              "FILTER('amc coop_trsx', 'amc coop_trsx'[DESCRIPION]=\"Cheque\")",
+              "",
+              "))"
+            ]
+          }
+        ]
+      }
+    ],
+    "annotations": [
+      {
+        "name": "ClientCompatibilityLevel",
+        "value": "600"
+      }
+    ]
+  },
+  "id": "SemanticModel"
+}
