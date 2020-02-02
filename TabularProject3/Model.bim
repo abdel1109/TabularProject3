@@ -204,6 +204,34 @@
             ]
           }
         ]
+      },
+      {
+        "name": "MeasureTab",
+        "columns": [
+          {
+            "type": "calculatedTableColumn",
+            "name": "Date",
+            "dataType": "dateTime",
+            "isNameInferred": true,
+            "isDataTypeInferred": true,
+            "sourceColumn": "[Date]"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "CalculatedTable 1",
+            "source": {
+              "type": "calculated",
+              "expression": "CALENDAR(20200101,20200102)"
+            }
+          }
+        ],
+        "measures": [
+          {
+            "name": "MaxDate",
+            "expression": "MAX('amc coop_trsx'[DATE_TRSC])"
+          }
+        ]
       }
     ],
     "annotations": [
